@@ -34,7 +34,7 @@ const FormComponent = props => {
           Enter Password
           <Field type="password" name="password" placeholder="password" />
         </label>
-        <Button theme="primary" type="submit">
+        <Button data-testid="submit" theme="primary" type="submit">
           Submit
         </Button>
       </Form>
