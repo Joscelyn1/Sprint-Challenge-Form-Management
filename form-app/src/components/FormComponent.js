@@ -9,7 +9,7 @@ const FormComponent = props => {
   const { touched, errors, status, handleSubmit, values } = props;
   useEffect(() => {
     if (status) {
-      setUsers(...users, [status]);
+      setUsers([...users, status]);
       console.log(users, "users");
       console.log("hello");
     }
@@ -61,7 +61,7 @@ const FormikFormComponent = withFormik({
     axios
       .post("http://localhost:5000/api/register", values)
       .then(res => {
-        console.log(res.config.data, "res");
+        console.log(res, "res");
         setStatus(res.config.data);
       })
       .catch(error => {
