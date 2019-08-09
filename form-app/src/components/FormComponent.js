@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "shards-react";
+import { Button, ListGroup, ListGroupItem } from "shards-react";
 import { Form, Field, withFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 
 const FormComponent = props => {
-  const [users, setUsers] = useState([]);
+  const [items, setItems] = useState([]);
   const { touched, errors, status, handleSubmit, values } = props;
+
   useEffect(() => {
-    if (status) {
-      setUsers([...users, status]);
-      console.log(users, "users");
-      console.log("hello");
-    }
-  }, [status]);
+    axios
+      .get("http://localhost:5000/api/restricted/data")
+      .then(res => {
+        setItems(res.data);
+      })
+      .catch(error => console.log(error));
+  }, []);
 
   return (
     <div>
@@ -36,9 +38,13 @@ const FormComponent = props => {
           Submit
         </Button>
       </Form>
-      {users.map(user => (
-        <p key={user}>{user}</p>
-      ))}
+      <div id="card-container">
+        {items.map(item => (
+          <ListGroup>
+            <ListGroupItem>{item.name}</ListGroupItem>
+          </ListGroup>
+        ))}
+      </div>
     </div>
   );
 };
@@ -61,8 +67,7 @@ const FormikFormComponent = withFormik({
     axios
       .post("http://localhost:5000/api/register", values)
       .then(res => {
-        console.log(res, "res");
-        setStatus(res.config.data);
+        console.log(res, "post res");
       })
       .catch(error => {
         console.log(error.response);
